@@ -1,23 +1,39 @@
-import logo from './logo.svg';
+import React, {useState, useCallback, useMemo} from "react";
+import VideoPlayer from "./components/VideoPlayer";
 import './App.css';
 
 function App() {
+    const [text, setText] = useState('');
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    const onPlay = useCallback(() => {
+        setIsPlaying(true);
+    }, []);
+
+    const onPause = useCallback(() => {
+        setIsPlaying(false);
+    }, []);
+
+    const videoData = useMemo(() => {
+       return {
+           url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+           title: 'Video'
+       }
+    }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+         <input type='text' onChange={(e) => {
+             setText(e.target.value);
+         }}/>
+         <span>{text}</span>
+
+        <div>Video is {isPlaying ? 'playing' : 'paused'}</div>
+        <VideoPlayer
+            src={videoData}
+            onPlay={onPlay}
+            onPause={onPause}
+        />
     </div>
   );
 }
